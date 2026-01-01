@@ -13,6 +13,7 @@ class HebrewWordGame {
         this.letterStatus = {};
         
         // Hebrew keyboard layout (without final letters - they're treated as regular)
+        // Balanced rows for better fit on mobile
         this.keyboardLayout = [
             ['ק', 'ר', 'א', 'ט', 'ו', 'פ'],
             ['ש', 'ד', 'ג', 'כ', 'ע', 'י', 'ח', 'ל'],
