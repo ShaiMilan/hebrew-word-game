@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>משחקי מילים בעברית</title>
+    <title>משחקים בעברית</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
         <!-- Main Menu - Choose Game -->
         <div id="main-menu" class="main-menu">
             <header>
-                <h1>🎮 משחקי מילים</h1>
+                <h1>🎮 משחקים</h1>
                 <p class="subtitle">בחר משחק להתחיל</p>
             </header>
             
@@ -32,7 +32,13 @@
                 <button class="game-choice-btn venn" id="choose-venn-game">
                     <span class="game-choice-icon">⭕</span>
                     <span class="game-choice-title">חידת הוון</span>
-                    <span class="game-choice-desc">מיין מילים לפי קטגוריות בדיאגרמת וון</span>
+                    <span class="game-choice-desc">מיין מילים לפי קטגוריות</span>
+                </button>
+                
+                <button class="game-choice-btn timing" id="choose-timing-game">
+                    <span class="game-choice-icon">⚡</span>
+                    <span class="game-choice-title">עצור בזמן</span>
+                    <span class="game-choice-desc">עצור את המחוג בנקודה המושלמת</span>
                 </button>
             </div>
         </div>
@@ -161,10 +167,85 @@
         </div>
     </div>
 
+        <!-- Timing Game -->
+        <div id="timing-game-container" class="game-section hidden">
+            <header>
+                <button class="back-btn" id="timing-game-back">← חזרה</button>
+                <h1>⚡ עצור בזמן</h1>
+            </header>
+
+            <div class="timing-game-area">
+                <!-- Score and Round -->
+                <div class="timing-header">
+                    <div class="timing-round">
+                        <span>סיבוב:</span>
+                        <span id="timing-round">1</span>
+                        <span>/</span>
+                        <span id="timing-max-rounds">10</span>
+                    </div>
+                    <div class="timing-score">
+                        <span>ניקוד:</span>
+                        <span id="timing-score">0</span>
+                    </div>
+                </div>
+
+                <!-- Instructions -->
+                <div class="timing-instruction" id="timing-instruction">
+                    לחץ כשהמחוג בתוך האזור הירוק!
+                </div>
+
+                <!-- Power Meter -->
+                <div class="power-meter-container">
+                    <div class="power-meter">
+                        <div class="meter-track">
+                            <div class="sweet-spot" id="sweet-spot"></div>
+                            <div class="meter-indicator" id="meter-indicator"></div>
+                        </div>
+                        <div class="meter-labels">
+                            <span>0</span>
+                            <span>50</span>
+                            <span>100</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hit Button -->
+                <button class="timing-hit-btn" id="timing-hit-btn">
+                    <span class="hit-btn-text">לחץ!</span>
+                    <span class="hit-btn-icon">👆</span>
+                </button>
+
+                <!-- Result Display -->
+                <div class="timing-result" id="timing-result"></div>
+
+                <!-- Progress Bar -->
+                <div class="timing-progress">
+                    <div class="timing-progress-bar" id="timing-progress-bar"></div>
+                </div>
+            </div>
+
+            <!-- Timing Game Over Modal -->
+            <div id="timing-game-over-modal" class="modal hidden">
+                <div class="modal-content">
+                    <div id="timing-modal-icon" class="modal-icon"></div>
+                    <h2 id="timing-modal-title"></h2>
+                    <p id="timing-modal-message"></p>
+                    <div class="timing-final-score">
+                        <span>ניקוד סופי:</span>
+                        <span id="timing-final-score">0</span>
+                    </div>
+                    <button id="timing-restart-btn" class="restart-btn">🔄 שחק שוב</button>
+                    <button id="timing-back-menu-btn" class="change-mode-btn">🏠 תפריט ראשי</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="words.js"></script>
     <script src="venn-puzzles.js"></script>
     <script src="game.js"></script>
     <script src="venn-game.js"></script>
+    <script src="timing-game.js"></script>
     <script src="main.js"></script>
 </body>
 </html>

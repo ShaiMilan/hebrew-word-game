@@ -706,6 +706,11 @@ header h1 {
     box-shadow: 0 10px 30px rgba(8, 217, 214, 0.4);
 }
 
+.game-choice-btn.timing {
+    background: linear-gradient(145deg, var(--accent-gold), var(--accent-orange));
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+}
+
 .game-choice-icon {
     font-size: 2.5rem;
 }
@@ -1151,6 +1156,268 @@ header h1 {
     .venn-circle-3 {
         width: 115px;
         height: 115px;
+    }
+}
+
+/* ============================================
+   TIMING GAME STYLES
+   ============================================ */
+
+.timing-game-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px;
+}
+
+.timing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border-radius: 14px;
+}
+
+.timing-round, .timing-score {
+    display: flex;
+    gap: 5px;
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.timing-round span:nth-child(2),
+.timing-score span:nth-child(2) {
+    color: var(--accent-gold);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.timing-instruction {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    padding: 10px;
+}
+
+/* Power Meter */
+.power-meter-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.power-meter {
+    width: 100%;
+    max-width: 350px;
+}
+
+.meter-track {
+    position: relative;
+    height: 60px;
+    background: linear-gradient(90deg, 
+        #1e3a5f 0%, 
+        #1e4d2b 35%, 
+        #10b981 45%, 
+        #10b981 55%, 
+        #1e4d2b 65%, 
+        #1e3a5f 100%
+    );
+    border-radius: 12px;
+    border: 3px solid var(--tile-border);
+    overflow: hidden;
+}
+
+.sweet-spot {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: linear-gradient(180deg, 
+        rgba(16, 185, 129, 0.4) 0%,
+        rgba(16, 185, 129, 0.6) 50%,
+        rgba(16, 185, 129, 0.4) 100%
+    );
+    border-left: 3px solid var(--correct);
+    border-right: 3px solid var(--correct);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+}
+
+.meter-indicator {
+    position: absolute;
+    top: -5px;
+    bottom: -5px;
+    width: 8px;
+    background: linear-gradient(180deg, #fff 0%, var(--accent-gold) 50%, #fff 100%);
+    border-radius: 4px;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.4);
+    transition: left 0.016s linear;
+}
+
+.meter-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 5px 0;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* Hit Button */
+.timing-hit-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 25px 50px;
+    margin: 0 auto;
+    border: none;
+    border-radius: 50%;
+    width: 140px;
+    height: 140px;
+    cursor: pointer;
+    background: linear-gradient(145deg, var(--accent-pink), #dc2626);
+    box-shadow: 0 10px 40px rgba(255, 46, 99, 0.5),
+                inset 0 -5px 20px rgba(0, 0, 0, 0.3);
+    font-family: 'Heebo', sans-serif;
+    transition: all 0.1s;
+}
+
+.timing-hit-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 5px 20px rgba(255, 46, 99, 0.5),
+                inset 0 -2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.timing-hit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.hit-btn-text {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: white;
+}
+
+.hit-btn-icon {
+    font-size: 2rem;
+}
+
+/* Result Display */
+.timing-result {
+    text-align: center;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+.timing-result.perfect {
+    color: var(--correct);
+    animation: pulse-glow 0.5s ease-out;
+}
+
+.timing-result.good {
+    color: var(--accent-cyan);
+}
+
+.timing-result.ok {
+    color: var(--wrong-position);
+}
+
+.timing-result.miss {
+    color: var(--accent-pink);
+}
+
+@keyframes pulse-glow {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); text-shadow: 0 0 20px var(--correct); }
+    100% { transform: scale(1); }
+}
+
+/* Progress Bar */
+.timing-progress {
+    height: 8px;
+    background: var(--bg-card);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.timing-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink));
+    transition: width 0.3s ease-out;
+    border-radius: 4px;
+}
+
+/* Final Score */
+.timing-final-score {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    padding: 15px;
+    background: linear-gradient(145deg, var(--bg-card), var(--bg-secondary));
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.timing-final-score span:nth-child(2) {
+    color: var(--accent-gold);
+    font-weight: 900;
+    font-size: 2rem;
+}
+
+/* Timing responsive */
+@media (max-height: 700px) {
+    .timing-hit-btn {
+        width: 120px;
+        height: 120px;
+        padding: 20px 40px;
+    }
+    
+    .hit-btn-text {
+        font-size: 1.3rem;
+    }
+    
+    .hit-btn-icon {
+        font-size: 1.6rem;
+    }
+    
+    .meter-track {
+        height: 50px;
+    }
+}
+
+@media (max-height: 600px) {
+    .timing-hit-btn {
+        width: 100px;
+        height: 100px;
+        padding: 15px 30px;
+    }
+    
+    .hit-btn-text {
+        font-size: 1.1rem;
+    }
+    
+    .hit-btn-icon {
+        font-size: 1.3rem;
+    }
+    
+    .meter-track {
+        height: 45px;
+    }
+    
+    .timing-instruction {
+        font-size: 0.95rem;
+        padding: 5px;
     }
 }
 
