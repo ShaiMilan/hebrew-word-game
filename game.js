@@ -12,12 +12,17 @@ class HebrewWordGame {
         this.gameOver = false;
         this.letterStatus = {};
         
-        // Hebrew keyboard layout
+        // Hebrew keyboard layout (without final letters - they're treated as regular)
         this.keyboardLayout = [
-            ['ק', 'ר', 'א', 'ט', 'ו', 'ן', 'ם', 'פ'],
-            ['ש', 'ד', 'ג', 'כ', 'ע', 'י', 'ח', 'ל', 'ך', 'ף'],
-            ['ז', 'ס', 'ב', 'ה', 'נ', 'מ', 'צ', 'ת', 'ץ']
+            ['ק', 'ר', 'א', 'ט', 'ו', 'פ'],
+            ['ש', 'ד', 'ג', 'כ', 'ע', 'י', 'ח', 'ל'],
+            ['ז', 'ס', 'ב', 'ה', 'נ', 'מ', 'צ', 'ת']
         ];
+        
+        // Map final letters to regular letters
+        this.finalToRegular = {
+            'ם': 'מ', 'ף': 'פ', 'ן': 'נ', 'ך': 'כ', 'ץ': 'צ'
+        };
         
         this.init();
     }
@@ -63,7 +68,8 @@ class HebrewWordGame {
     handlePhysicalKeyboard(e) {
         if (this.gameOver || !this.currentMode) return;
         
-        const hebrewKeys = 'קראטוןםפשדגכעיחלךףזסבהנמצתץ';
+        const hebrewKeys = 'קראטופשדגכעיחלזסבהנמצת';
+        const finalKeys = 'ןםךףץ';
         
         if (e.key === 'Backspace') {
             e.preventDefault();
@@ -73,6 +79,9 @@ class HebrewWordGame {
             this.submitGuess();
         } else if (hebrewKeys.includes(e.key)) {
             this.addLetter(e.key);
+        } else if (finalKeys.includes(e.key)) {
+            // Convert final letter to regular form
+            this.addLetter(this.normalizeLetter(e.key));
         }
     }
     
@@ -221,8 +230,8 @@ class HebrewWordGame {
         // Update keyboard colors
         this.updateKeyboardColors(guess, result);
         
-        // Check if won
-        if (guess === this.targetWord) {
+        // Check if won (using letter matching that treats final/regular as same)
+        if (this.guessMatchesTarget(guess)) {
             this.gameOver = true;
             setTimeout(() => this.showWinModal(), 600);
             return;
@@ -244,6 +253,27 @@ class HebrewWordGame {
         this.showMessage('');
     }
     
+    // Normalize letter - convert final letters to regular form
+    normalizeLetter(letter) {
+        return this.finalToRegular[letter] || letter;
+    }
+    
+    // Check if two letters match (considering final/regular equivalence)
+    lettersMatch(a, b) {
+        return this.normalizeLetter(a) === this.normalizeLetter(b);
+    }
+    
+    // Check if guess matches target (for win condition)
+    guessMatchesTarget(guess) {
+        if (guess.length !== this.targetWord.length) return false;
+        for (let i = 0; i < guess.length; i++) {
+            if (!this.lettersMatch(guess[i], this.targetWord[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     checkGuess(guess) {
         const result = [];
         const targetLetters = this.targetWord.split('');
@@ -252,7 +282,7 @@ class HebrewWordGame {
         
         // First pass: find correct positions
         for (let i = 0; i < guessLetters.length; i++) {
-            if (guessLetters[i] === targetLetters[i]) {
+            if (this.lettersMatch(guessLetters[i], targetLetters[i])) {
                 result[i] = 'correct';
                 usedIndices.push(i);
             }
@@ -264,7 +294,7 @@ class HebrewWordGame {
             
             let found = false;
             for (let j = 0; j < targetLetters.length; j++) {
-                if (!usedIndices.includes(j) && guessLetters[i] === targetLetters[j]) {
+                if (!usedIndices.includes(j) && this.lettersMatch(guessLetters[i], targetLetters[j])) {
                     result[i] = 'wrong-position';
                     usedIndices.push(j);
                     found = true;
@@ -297,21 +327,23 @@ class HebrewWordGame {
         const letters = guess.split('');
         
         letters.forEach((letter, i) => {
-            const key = document.getElementById(`key-${letter}`);
+            // Normalize the letter to find the key (final letters map to regular)
+            const normalizedLetter = this.normalizeLetter(letter);
+            const key = document.getElementById(`key-${normalizedLetter}`);
             if (!key) return;
             
             const status = result[i];
-            const currentStatus = this.letterStatus[letter];
+            const currentStatus = this.letterStatus[normalizedLetter];
             
             // Priority: correct > wrong-position > wrong
             if (status === 'correct') {
-                this.letterStatus[letter] = 'correct';
+                this.letterStatus[normalizedLetter] = 'correct';
                 key.className = 'key correct';
             } else if (status === 'wrong-position' && currentStatus !== 'correct') {
-                this.letterStatus[letter] = 'wrong-position';
+                this.letterStatus[normalizedLetter] = 'wrong-position';
                 key.className = 'key wrong-position';
             } else if (!currentStatus) {
-                this.letterStatus[letter] = 'wrong';
+                this.letterStatus[normalizedLetter] = 'wrong';
                 key.className = 'key wrong';
             }
         });
