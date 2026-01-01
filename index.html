@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>משחק ניחוש המילה</title>
+    <title>משחקי מילים בעברית</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -15,68 +15,149 @@
         <div class="bg-decoration bg-1"></div>
         <div class="bg-decoration bg-2"></div>
         
-        <header>
-            <h1>🎯 נחש את המילה</h1>
-        </header>
-
-        <!-- Mode Selection -->
-        <div id="mode-selection" class="mode-selection">
-            <h2>בחר רמת קושי</h2>
-            <div class="mode-buttons">
-                <button class="mode-btn easy" data-mode="easy" data-letters="3">
-                    <span class="mode-icon">🌟</span>
-                    <span class="mode-name">קל</span>
-                    <span class="mode-desc">3 אותיות</span>
+        <!-- Main Menu - Choose Game -->
+        <div id="main-menu" class="main-menu">
+            <header>
+                <h1>🎮 משחקי מילים</h1>
+                <p class="subtitle">בחר משחק להתחיל</p>
+            </header>
+            
+            <div class="game-choices">
+                <button class="game-choice-btn" id="choose-word-game">
+                    <span class="game-choice-icon">🎯</span>
+                    <span class="game-choice-title">נחש את המילה</span>
+                    <span class="game-choice-desc">נחש מילה בעברית ב-6 ניסיונות</span>
                 </button>
-                <button class="mode-btn medium" data-mode="medium" data-letters="4">
-                    <span class="mode-icon">⭐</span>
-                    <span class="mode-name">בינוני</span>
-                    <span class="mode-desc">4 אותיות</span>
-                </button>
-                <button class="mode-btn hard" data-mode="hard" data-letters="5">
-                    <span class="mode-icon">💫</span>
-                    <span class="mode-name">קשה</span>
-                    <span class="mode-desc">5 אותיות</span>
+                
+                <button class="game-choice-btn venn" id="choose-venn-game">
+                    <span class="game-choice-icon">⭕</span>
+                    <span class="game-choice-title">חידת הוון</span>
+                    <span class="game-choice-desc">מיין מילים לפי קטגוריות בדיאגרמת וון</span>
                 </button>
             </div>
         </div>
 
-        <!-- Game Area -->
-        <div id="game-area" class="game-area hidden">
-            <div class="game-header">
-                <div class="mode-badge" id="current-mode"></div>
-                <div class="tries-counter">
-                    <span>ניסיונות:</span>
-                    <span id="tries-left">6</span>
-                    <span>/</span>
-                    <span>6</span>
+        <!-- Word Guessing Game -->
+        <div id="word-game-container" class="game-section hidden">
+            <header>
+                <button class="back-btn" id="word-game-back">← חזרה</button>
+                <h1>🎯 נחש את המילה</h1>
+            </header>
+
+            <!-- Mode Selection -->
+            <div id="mode-selection" class="mode-selection">
+                <h2>בחר רמת קושי</h2>
+                <div class="mode-buttons">
+                    <button class="mode-btn easy" data-mode="easy" data-letters="3">
+                        <span class="mode-icon">🌟</span>
+                        <span class="mode-name">קל</span>
+                        <span class="mode-desc">3 אותיות</span>
+                    </button>
+                    <button class="mode-btn medium" data-mode="medium" data-letters="4">
+                        <span class="mode-icon">⭐</span>
+                        <span class="mode-name">בינוני</span>
+                        <span class="mode-desc">4 אותיות</span>
+                    </button>
+                    <button class="mode-btn hard" data-mode="hard" data-letters="5">
+                        <span class="mode-icon">💫</span>
+                        <span class="mode-name">קשה</span>
+                        <span class="mode-desc">5 אותיות</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- Guesses Grid -->
-            <div id="guesses-grid" class="guesses-grid"></div>
+            <!-- Game Area -->
+            <div id="game-area" class="game-area hidden">
+                <div class="game-header">
+                    <div class="mode-badge" id="current-mode"></div>
+                    <div class="tries-counter">
+                        <span>ניסיונות:</span>
+                        <span id="tries-left">6</span>
+                        <span>/</span>
+                        <span>6</span>
+                    </div>
+                </div>
 
-            <!-- Message Area -->
-            <div id="message" class="message"></div>
+                <div id="guesses-grid" class="guesses-grid"></div>
+                <div id="message" class="message"></div>
+                <div id="keyboard" class="keyboard"></div>
+            </div>
 
-            <!-- Virtual Keyboard -->
-            <div id="keyboard" class="keyboard"></div>
+            <!-- Game Over Modal -->
+            <div id="game-over-modal" class="modal hidden">
+                <div class="modal-content">
+                    <div id="modal-icon" class="modal-icon"></div>
+                    <h2 id="modal-title"></h2>
+                    <p id="modal-message"></p>
+                    <div id="word-reveal" class="word-reveal"></div>
+                    <button id="restart-btn" class="restart-btn">🔄 התחל מחדש</button>
+                    <button id="change-mode-btn" class="change-mode-btn">📊 שנה רמה</button>
+                </div>
+            </div>
         </div>
 
-        <!-- Game Over Modal -->
-        <div id="game-over-modal" class="modal hidden">
-            <div class="modal-content">
-                <div id="modal-icon" class="modal-icon"></div>
-                <h2 id="modal-title"></h2>
-                <p id="modal-message"></p>
-                <div id="word-reveal" class="word-reveal"></div>
-                <button id="restart-btn" class="restart-btn">🔄 התחל מחדש</button>
-                <button id="change-mode-btn" class="change-mode-btn">📊 שנה רמה</button>
+        <!-- Venn Diagram Game -->
+        <div id="venn-game-container" class="game-section hidden">
+            <header>
+                <button class="back-btn" id="venn-game-back">← חזרה</button>
+                <h1>⭕ חידת הוון</h1>
+            </header>
+
+            <div class="venn-game-area">
+                <div class="venn-header">
+                    <div class="venn-tries">
+                        <span>ניחושים:</span>
+                        <span id="venn-tries-left">5</span>
+                        <span>/</span>
+                        <span>5</span>
+                    </div>
+                    <button id="venn-check-btn" class="venn-check-btn">בדוק ✓</button>
+                </div>
+
+                <!-- Venn Diagram -->
+                <div class="venn-diagram-container">
+                    <div class="venn-diagram">
+                        <div class="venn-circle venn-left">
+                            <div class="venn-label" id="venn-label-left"></div>
+                            <div class="venn-zone" id="zone-left" data-zone="left"></div>
+                        </div>
+                        <div class="venn-circle venn-right">
+                            <div class="venn-label" id="venn-label-right"></div>
+                            <div class="venn-zone" id="zone-right" data-zone="right"></div>
+                        </div>
+                        <div class="venn-intersection">
+                            <div class="venn-zone" id="zone-middle" data-zone="middle"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Word Bank -->
+                <div class="word-bank">
+                    <div class="word-bank-label">בנק מילים</div>
+                    <div id="word-bank-words" class="word-bank-words"></div>
+                </div>
+
+                <!-- Venn Message -->
+                <div id="venn-message" class="message"></div>
+            </div>
+
+            <!-- Venn Game Over Modal -->
+            <div id="venn-game-over-modal" class="modal hidden">
+                <div class="modal-content">
+                    <div id="venn-modal-icon" class="modal-icon"></div>
+                    <h2 id="venn-modal-title"></h2>
+                    <p id="venn-modal-message"></p>
+                    <button id="venn-restart-btn" class="restart-btn">🔄 שחק שוב</button>
+                    <button id="venn-back-menu-btn" class="change-mode-btn">🏠 תפריט ראשי</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="words.js"></script>
+    <script src="venn-puzzles.js"></script>
     <script src="game.js"></script>
+    <script src="venn-game.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
