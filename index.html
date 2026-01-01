@@ -114,20 +114,27 @@
                     <button id="venn-check-btn" class="venn-check-btn">בדוק ✓</button>
                 </div>
 
-                <!-- Venn Diagram -->
+                <!-- Venn Diagram - 3 Circles -->
                 <div class="venn-diagram-container">
-                    <div class="venn-diagram">
-                        <div class="venn-circle venn-left">
-                            <div class="venn-label" id="venn-label-left"></div>
-                            <div class="venn-zone" id="zone-left" data-zone="left"></div>
-                        </div>
-                        <div class="venn-circle venn-right">
-                            <div class="venn-label" id="venn-label-right"></div>
-                            <div class="venn-zone" id="zone-right" data-zone="right"></div>
-                        </div>
-                        <div class="venn-intersection">
-                            <div class="venn-zone" id="zone-middle" data-zone="middle"></div>
-                        </div>
+                    <div class="venn-diagram-3">
+                        <!-- Labels -->
+                        <div class="venn-label-3 label-a" id="venn-label-a"></div>
+                        <div class="venn-label-3 label-b" id="venn-label-b"></div>
+                        <div class="venn-label-3 label-c" id="venn-label-c"></div>
+                        
+                        <!-- Circles (visual only) -->
+                        <div class="venn-circle-3 circle-a"></div>
+                        <div class="venn-circle-3 circle-b"></div>
+                        <div class="venn-circle-3 circle-c"></div>
+                        
+                        <!-- Drop Zones -->
+                        <div class="venn-zone-3 zone-a-only" id="zone-a" data-zone="a"></div>
+                        <div class="venn-zone-3 zone-b-only" id="zone-b" data-zone="b"></div>
+                        <div class="venn-zone-3 zone-c-only" id="zone-c" data-zone="c"></div>
+                        <div class="venn-zone-3 zone-ab" id="zone-ab" data-zone="ab"></div>
+                        <div class="venn-zone-3 zone-ac" id="zone-ac" data-zone="ac"></div>
+                        <div class="venn-zone-3 zone-bc" id="zone-bc" data-zone="bc"></div>
+                        <div class="venn-zone-3 zone-abc" id="zone-abc" data-zone="abc"></div>
                     </div>
                 </div>
 

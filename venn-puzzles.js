@@ -1,146 +1,155 @@
-// Venn Diagram Puzzles in Hebrew
-// Each puzzle has two categories and 7 words to place
+// Venn Diagram Puzzles in Hebrew - 3 Categories
+// Zones: a, b, c (single), ab, ac, bc (pairs), abc (all three)
 
 window.VENN_PUZZLES = [
     {
         id: 1,
-        leftCategory: "פירות",
-        rightCategory: "ירקות",
+        categoryA: "פירות",
+        categoryB: "ירקות",
+        categoryC: "אדום",
         words: [
-            { word: "תפוח", zone: "left" },      // Apple - fruit
-            { word: "בננה", zone: "left" },      // Banana - fruit
-            { word: "גזר", zone: "right" },      // Carrot - vegetable
-            { word: "מלפפון", zone: "right" },   // Cucumber - vegetable
-            { word: "עגבניה", zone: "middle" },  // Tomato - both (botanically fruit, culinarily vegetable)
-            { word: "אבוקדו", zone: "middle" },  // Avocado - both
-            { word: "תות", zone: "left" }        // Strawberry - fruit
+            { word: "תפוח", zone: "ac" },      // Apple - fruit + red
+            { word: "בננה", zone: "a" },       // Banana - just fruit
+            { word: "גזר", zone: "b" },        // Carrot - just vegetable
+            { word: "עגבניה", zone: "abc" },   // Tomato - fruit, vegetable, red
+            { word: "תות", zone: "ac" },       // Strawberry - fruit + red
+            { word: "מלפפון", zone: "b" },     // Cucumber - just vegetable
+            { word: "פלפל", zone: "bc" }       // Red pepper - vegetable + red
         ]
     },
     {
         id: 2,
-        leftCategory: "חיות בית",
-        rightCategory: "חיות בר",
+        categoryA: "חיות בית",
+        categoryB: "חיות בר",
+        categoryC: "טורפים",
         words: [
-            { word: "כלב", zone: "left" },       // Dog - pet
-            { word: "חתול", zone: "left" },      // Cat - pet
-            { word: "אריה", zone: "right" },     // Lion - wild
-            { word: "זאב", zone: "right" },      // Wolf - wild
-            { word: "סוס", zone: "middle" },     // Horse - both
-            { word: "ארנב", zone: "middle" },    // Rabbit - both
-            { word: "נמר", zone: "right" }       // Tiger - wild
+            { word: "כלב", zone: "a" },        // Dog - pet
+            { word: "חתול", zone: "ac" },      // Cat - pet + predator
+            { word: "אריה", zone: "bc" },      // Lion - wild + predator
+            { word: "ארנב", zone: "ab" },      // Rabbit - pet or wild
+            { word: "זאב", zone: "bc" },       // Wolf - wild + predator
+            { word: "דג", zone: "a" },         // Fish - pet
+            { word: "נמר", zone: "bc" }        // Tiger - wild + predator
         ]
     },
     {
         id: 3,
-        leftCategory: "כלי מטבח",
-        rightCategory: "כלי אוכל",
+        categoryA: "מזון חם",
+        categoryB: "מזון קר",
+        categoryC: "מתוק",
         words: [
-            { word: "סיר", zone: "left" },       // Pot - kitchen tool
-            { word: "מחבת", zone: "left" },      // Pan - kitchen tool
-            { word: "צלחת", zone: "right" },     // Plate - eating utensil
-            { word: "מזלג", zone: "right" },     // Fork - eating utensil
-            { word: "סכין", zone: "middle" },    // Knife - both
-            { word: "כף", zone: "middle" },      // Spoon - both
-            { word: "קערה", zone: "middle" }     // Bowl - both
+            { word: "מרק", zone: "a" },        // Soup - hot
+            { word: "גלידה", zone: "bc" },     // Ice cream - cold + sweet
+            { word: "שוקו", zone: "ac" },      // Hot chocolate - hot + sweet
+            { word: "סלט", zone: "b" },        // Salad - cold
+            { word: "עוגה", zone: "c" },       // Cake - sweet (can be any temp)
+            { word: "פיצה", zone: "a" },       // Pizza - hot
+            { word: "ארטיק", zone: "bc" }      // Popsicle - cold + sweet
         ]
     },
     {
         id: 4,
-        leftCategory: "ספורט מים",
-        rightCategory: "ספורט כדור",
+        categoryA: "ספורט מים",
+        categoryB: "ספורט כדור",
+        categoryC: "ספורט קבוצתי",
         words: [
-            { word: "שחיה", zone: "left" },      // Swimming - water sport
-            { word: "גלישה", zone: "left" },     // Surfing - water sport
-            { word: "כדורגל", zone: "right" },   // Soccer - ball sport
-            { word: "טניס", zone: "right" },     // Tennis - ball sport
-            { word: "פולו", zone: "middle" },    // Water polo - both
-            { word: "צלילה", zone: "left" },     // Diving - water sport
-            { word: "כדורסל", zone: "right" }    // Basketball - ball sport
+            { word: "שחיה", zone: "a" },       // Swimming - water
+            { word: "כדורגל", zone: "bc" },    // Soccer - ball + team
+            { word: "פולו", zone: "abc" },     // Water polo - all three
+            { word: "טניס", zone: "b" },       // Tennis - ball
+            { word: "כדורסל", zone: "bc" },    // Basketball - ball + team
+            { word: "גלישה", zone: "a" },      // Surfing - water
+            { word: "כדורעף", zone: "bc" }     // Volleyball - ball + team
         ]
     },
     {
         id: 5,
-        leftCategory: "מזון חם",
-        rightCategory: "מזון קר",
+        categoryA: "כלי נגינה",
+        categoryB: "עשוי עץ",
+        categoryC: "משמיע צליל גבוה",
         words: [
-            { word: "מרק", zone: "left" },       // Soup - hot
-            { word: "פיצה", zone: "left" },      // Pizza - hot
-            { word: "גלידה", zone: "right" },    // Ice cream - cold
-            { word: "סלט", zone: "right" },      // Salad - cold
-            { word: "קפה", zone: "middle" },     // Coffee - both
-            { word: "תה", zone: "middle" },      // Tea - both
-            { word: "סושי", zone: "right" }      // Sushi - cold
+            { word: "גיטרה", zone: "ab" },     // Guitar - instrument + wood
+            { word: "חליל", zone: "abc" },     // Flute - instrument + wood + high
+            { word: "תוף", zone: "a" },        // Drum - instrument
+            { word: "כינור", zone: "abc" },    // Violin - instrument + wood + high
+            { word: "פסנתר", zone: "ab" },     // Piano - instrument + wood
+            { word: "שולחן", zone: "b" },      // Table - just wood
+            { word: "צפצפה", zone: "c" }       // Whistle - just high sound
         ]
     },
     {
         id: 6,
-        leftCategory: "כלי נגינה",
-        rightCategory: "כלי כתיבה",
+        categoryA: "רהיטים",
+        categoryB: "מכשירי חשמל",
+        categoryC: "במטבח",
         words: [
-            { word: "גיטרה", zone: "left" },     // Guitar - instrument
-            { word: "פסנתר", zone: "left" },     // Piano - instrument
-            { word: "עט", zone: "right" },       // Pen - writing tool
-            { word: "עפרון", zone: "right" },    // Pencil - writing tool
-            { word: "חליל", zone: "left" },      // Flute - instrument
-            { word: "מחק", zone: "right" },      // Eraser - writing tool
-            { word: "תוף", zone: "left" }        // Drum - instrument
+            { word: "כסא", zone: "a" },        // Chair - furniture
+            { word: "מקרר", zone: "bc" },      // Fridge - appliance + kitchen
+            { word: "שולחן", zone: "ac" },     // Table - furniture + kitchen
+            { word: "תנור", zone: "bc" },      // Oven - appliance + kitchen
+            { word: "ספה", zone: "a" },        // Sofa - furniture
+            { word: "מיקסר", zone: "bc" },     // Mixer - appliance + kitchen
+            { word: "מיטה", zone: "a" }        // Bed - furniture
         ]
     },
     {
         id: 7,
-        leftCategory: "בגדי קיץ",
-        rightCategory: "בגדי חורף",
+        categoryA: "עופות",
+        categoryB: "יונקים",
+        categoryC: "חיים במים",
         words: [
-            { word: "שורט", zone: "left" },      // Shorts - summer
-            { word: "גופיה", zone: "left" },     // Tank top - summer
-            { word: "מעיל", zone: "right" },     // Coat - winter
-            { word: "צעיף", zone: "right" },     // Scarf - winter
-            { word: "ג׳ינס", zone: "middle" },   // Jeans - both
-            { word: "נעלי", zone: "middle" },    // Shoes - both
-            { word: "סנדל", zone: "left" }       // Sandals - summer
+            { word: "נשר", zone: "a" },        // Eagle - bird
+            { word: "דולפין", zone: "bc" },    // Dolphin - mammal + water
+            { word: "פינגווין", zone: "ac" },  // Penguin - bird + water
+            { word: "כלב", zone: "b" },        // Dog - mammal
+            { word: "ברווז", zone: "ac" },     // Duck - bird + water
+            { word: "לויתן", zone: "bc" },     // Whale - mammal + water
+            { word: "תוכי", zone: "a" }        // Parrot - bird
         ]
     },
     {
         id: 8,
-        leftCategory: "רהיטים",
-        rightCategory: "מכשירי חשמל",
+        categoryA: "משקאות",
+        categoryB: "מכיל חלב",
+        categoryC: "קר",
         words: [
-            { word: "כסא", zone: "left" },       // Chair - furniture
-            { word: "שולחן", zone: "left" },     // Table - furniture
-            { word: "מקרר", zone: "right" },     // Refrigerator - appliance
-            { word: "טלויזיה", zone: "right" },  // TV - appliance
-            { word: "מיטה", zone: "left" },      // Bed - furniture
-            { word: "תנור", zone: "right" },     // Oven - appliance
-            { word: "ארון", zone: "left" }       // Closet - furniture
+            { word: "מיץ", zone: "ac" },       // Juice - drink + cold
+            { word: "שוקו", zone: "ab" },      // Chocolate milk - drink + milk (can be hot)
+            { word: "גלידה", zone: "bc" },     // Ice cream - milk + cold
+            { word: "קפה", zone: "a" },        // Coffee - drink (hot)
+            { word: "מילקשייק", zone: "abc" }, // Milkshake - drink + milk + cold
+            { word: "גבינה", zone: "b" },      // Cheese - milk
+            { word: "מים", zone: "ac" }        // Water - drink + cold
         ]
     },
     {
         id: 9,
-        leftCategory: "משקאות",
-        rightCategory: "קינוחים",
+        categoryA: "בגדים",
+        categoryB: "לרגליים",
+        categoryC: "לחורף",
         words: [
-            { word: "מיץ", zone: "left" },       // Juice - drink
-            { word: "מים", zone: "left" },       // Water - drink
-            { word: "עוגה", zone: "right" },     // Cake - dessert
-            { word: "גלידה", zone: "right" },    // Ice cream - dessert
-            { word: "שוקו", zone: "middle" },    // Chocolate milk - both
-            { word: "מילקשייק", zone: "middle" },// Milkshake - both
-            { word: "ביסקויט", zone: "right" }   // Cookie - dessert
+            { word: "מעיל", zone: "ac" },      // Coat - clothing + winter
+            { word: "נעליים", zone: "b" },     // Shoes - feet
+            { word: "מגפיים", zone: "bc" },    // Boots - feet + winter
+            { word: "גרביים", zone: "abc" },   // Socks - clothing + feet + winter
+            { word: "חולצה", zone: "a" },      // Shirt - clothing
+            { word: "צעיף", zone: "c" },       // Scarf - winter
+            { word: "סנדלים", zone: "b" }      // Sandals - feet
         ]
     },
     {
         id: 10,
-        leftCategory: "עופות",
-        rightCategory: "יונקים",
+        categoryA: "ירוק",
+        categoryB: "עגול",
+        categoryC: "אוכלים",
         words: [
-            { word: "נשר", zone: "left" },       // Eagle - bird
-            { word: "תוכי", zone: "left" },      // Parrot - bird
-            { word: "פיל", zone: "right" },      // Elephant - mammal
-            { word: "דוב", zone: "right" },      // Bear - mammal
-            { word: "עטלף", zone: "right" },     // Bat - mammal (flies but mammal)
-            { word: "פינגווין", zone: "left" },  // Penguin - bird
-            { word: "כלב", zone: "right" }       // Dog - mammal
+            { word: "תפוח", zone: "bc" },      // Apple - round + edible
+            { word: "מלפפון", zone: "ac" },    // Cucumber - green + edible
+            { word: "כדור", zone: "b" },       // Ball - round
+            { word: "עלה", zone: "a" },        // Leaf - green
+            { word: "אבטיח", zone: "abc" },    // Watermelon - green + round + edible
+            { word: "אפונה", zone: "abc" },    // Peas - green + round + edible
+            { word: "עגבניה", zone: "bc" }     // Tomato - round + edible
         ]
     }
 ];
-

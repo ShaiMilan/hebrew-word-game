@@ -1,4 +1,4 @@
-// Venn Diagram Game Logic
+// Venn Diagram Game Logic - 3 Categories
 
 class VennGame {
     constructor() {
@@ -9,6 +9,9 @@ class VennGame {
         this.placements = {}; // word -> zone
         this.correctPlacements = new Set();
         this.usedPuzzles = [];
+        
+        // All possible zones for 3-circle Venn
+        this.zones = ['a', 'b', 'c', 'ab', 'ac', 'bc', 'abc'];
         
         this.init();
     }
@@ -50,13 +53,15 @@ class VennGame {
     
     buildPuzzle() {
         // Set category labels
-        document.getElementById('venn-label-left').textContent = this.currentPuzzle.leftCategory;
-        document.getElementById('venn-label-right').textContent = this.currentPuzzle.rightCategory;
+        document.getElementById('venn-label-a').textContent = this.currentPuzzle.categoryA;
+        document.getElementById('venn-label-b').textContent = this.currentPuzzle.categoryB;
+        document.getElementById('venn-label-c').textContent = this.currentPuzzle.categoryC;
         
-        // Clear zones
-        document.getElementById('zone-left').innerHTML = '';
-        document.getElementById('zone-right').innerHTML = '';
-        document.getElementById('zone-middle').innerHTML = '';
+        // Clear all zones
+        this.zones.forEach(zone => {
+            const zoneEl = document.getElementById(`zone-${zone}`);
+            if (zoneEl) zoneEl.innerHTML = '';
+        });
         
         // Build word bank
         const wordBank = document.getElementById('word-bank-words');
@@ -94,12 +99,14 @@ class VennGame {
     }
     
     setupDropZones() {
-        const zones = ['zone-left', 'zone-right', 'zone-middle'];
-        zones.forEach(zoneId => {
-            const zone = document.getElementById(zoneId);
-            zone.addEventListener('dragover', (e) => this.onDragOver(e));
-            zone.addEventListener('dragleave', (e) => this.onDragLeave(e));
-            zone.addEventListener('drop', (e) => this.onDrop(e));
+        // Setup all zone drop handlers
+        this.zones.forEach(zone => {
+            const zoneEl = document.getElementById(`zone-${zone}`);
+            if (zoneEl) {
+                zoneEl.addEventListener('dragover', (e) => this.onDragOver(e));
+                zoneEl.addEventListener('dragleave', (e) => this.onDragLeave(e));
+                zoneEl.addEventListener('drop', (e) => this.onDrop(e));
+            }
         });
         
         // Also allow dropping back to word bank
@@ -159,8 +166,6 @@ class VennGame {
     // Touch handlers for mobile
     touchDragElement = null;
     touchClone = null;
-    touchStartX = 0;
-    touchStartY = 0;
     
     onTouchStart(e) {
         if (this.gameOver) return;
@@ -169,8 +174,6 @@ class VennGame {
         
         this.touchDragElement = e.target;
         const touch = e.touches[0];
-        this.touchStartX = touch.clientX;
-        this.touchStartY = touch.clientY;
         
         // Create visual clone
         this.touchClone = e.target.cloneNode(true);
@@ -195,8 +198,8 @@ class VennGame {
     
     updateTouchClonePosition(touch) {
         if (!this.touchClone) return;
-        this.touchClone.style.left = (touch.clientX - 40) + 'px';
-        this.touchClone.style.top = (touch.clientY - 20) + 'px';
+        this.touchClone.style.left = (touch.clientX - 30) + 'px';
+        this.touchClone.style.top = (touch.clientY - 15) + 'px';
     }
     
     onTouchEnd(e) {
@@ -215,7 +218,7 @@ class VennGame {
         const dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
         
         if (dropTarget) {
-            const zone = dropTarget.closest('.venn-zone');
+            const zone = dropTarget.closest('.venn-zone-3');
             const bank = dropTarget.closest('.word-bank-words');
             
             if (zone && !this.correctPlacements.has(word)) {
@@ -237,11 +240,12 @@ class VennGame {
         
         // Add to new zone
         const zoneEl = document.getElementById(`zone-${zone}`);
-        const wordEl = this.createWordElement(word);
-        wordEl.classList.add('in-zone');
-        zoneEl.appendChild(wordEl);
-        
-        this.placements[word] = zone;
+        if (zoneEl) {
+            const wordEl = this.createWordElement(word);
+            wordEl.classList.add('in-zone');
+            zoneEl.appendChild(wordEl);
+            this.placements[word] = zone;
+        }
     }
     
     returnWordToBank(word) {
@@ -263,15 +267,13 @@ class VennGame {
         if (this.gameOver) return;
         
         // Check if all words are placed
-        const placedCount = Object.keys(this.placements).length;
-        const totalWords = this.currentPuzzle.words.length - this.correctPlacements.size;
+        const unplacedCount = this.currentPuzzle.words.length - this.correctPlacements.size - Object.keys(this.placements).length;
         
-        if (placedCount < totalWords) {
+        if (unplacedCount > 0) {
             this.showMessage('יש למקם את כל המילים!', 'error');
             return;
         }
         
-        let allCorrect = true;
         let newCorrect = 0;
         
         // Check each placement
@@ -292,7 +294,6 @@ class VennGame {
                 delete this.placements[wordData.word];
             } else {
                 // Incorrect - return to bank
-                allCorrect = false;
                 if (wordEl) {
                     wordEl.classList.add('incorrect');
                     setTimeout(() => {
@@ -391,4 +392,3 @@ class VennGame {
 
 // Initialize
 window.vennGame = new VennGame();
-
