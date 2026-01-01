@@ -822,15 +822,15 @@ header h1 {
 
 .venn-diagram-3 {
     position: relative;
-    width: 280px;
-    height: 260px;
+    width: 320px;
+    height: 300px;
 }
 
 /* Circle visuals */
 .venn-circle-3 {
     position: absolute;
-    width: 140px;
-    height: 140px;
+    width: 170px;
+    height: 170px;
     border-radius: 50%;
     border: 3px solid;
     pointer-events: none;
@@ -845,15 +845,15 @@ header h1 {
 }
 
 .circle-b {
-    bottom: 20px;
-    left: 10px;
+    bottom: 10px;
+    left: 0;
     border-color: var(--accent-cyan);
     background: rgba(8, 217, 214, 0.12);
 }
 
 .circle-c {
-    bottom: 20px;
-    right: 10px;
+    bottom: 10px;
+    right: 0;
     border-color: var(--accent-gold);
     background: rgba(255, 215, 0, 0.12);
 }
@@ -861,28 +861,28 @@ header h1 {
 /* Labels */
 .venn-label-3 {
     position: absolute;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 700;
     white-space: nowrap;
     z-index: 10;
 }
 
 .label-a {
-    top: -5px;
+    top: -8px;
     left: 50%;
     transform: translateX(-50%);
     color: var(--accent-purple);
 }
 
 .label-b {
-    bottom: -5px;
-    left: 0;
+    bottom: -8px;
+    left: 5px;
     color: var(--accent-cyan);
 }
 
 .label-c {
-    bottom: -5px;
-    right: 0;
+    bottom: -8px;
+    right: 5px;
     color: var(--accent-gold);
 }
 
@@ -894,60 +894,73 @@ header h1 {
     align-items: center;
     justify-content: center;
     gap: 2px;
-    padding: 3px;
-    border-radius: 8px;
-    min-height: 30px;
+    padding: 4px;
+    border-radius: 6px;
+    min-height: 32px;
     z-index: 5;
+    border: 2px dashed rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.03);
+    transition: all 0.2s;
+}
+
+.venn-zone-3:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.venn-zone-3.drag-over {
+    border-color: var(--accent-cyan);
+    background: rgba(8, 217, 214, 0.15);
 }
 
 /* A only - top */
 .zone-a-only {
-    top: 15px;
+    top: 18px;
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;
-    height: 45px;
+    width: 65px;
+    height: 48px;
 }
 
 /* B only - bottom left */
 .zone-b-only {
-    bottom: 35px;
-    left: 15px;
-    width: 50px;
-    height: 45px;
+    bottom: 30px;
+    left: 12px;
+    width: 55px;
+    height: 48px;
 }
 
 /* C only - bottom right */
 .zone-c-only {
-    bottom: 35px;
-    right: 15px;
-    width: 50px;
-    height: 45px;
+    bottom: 30px;
+    right: 12px;
+    width: 55px;
+    height: 48px;
 }
 
 /* A∩B - left intersection */
 .zone-ab {
-    top: 75px;
-    left: 55px;
-    width: 45px;
-    height: 40px;
+    top: 95px;
+    left: 58px;
+    width: 50px;
+    height: 42px;
 }
 
 /* A∩C - right intersection */
 .zone-ac {
-    top: 75px;
-    right: 55px;
-    width: 45px;
-    height: 40px;
+    top: 95px;
+    right: 58px;
+    width: 50px;
+    height: 42px;
 }
 
 /* B∩C - bottom intersection */
 .zone-bc {
-    bottom: 25px;
+    bottom: 18px;
     left: 50%;
     transform: translateX(-50%);
-    width: 50px;
-    height: 35px;
+    width: 55px;
+    height: 38px;
 }
 
 /* A∩B∩C - center */
@@ -955,9 +968,10 @@ header h1 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 50px;
-    height: 40px;
-    margin-top: 10px;
+    width: 55px;
+    height: 45px;
+    margin-top: 15px;
+    border-color: rgba(255, 255, 255, 0.35);
 }
 
 /* Word Bank */
@@ -1032,15 +1046,15 @@ header h1 {
 }
 
 /* Venn responsive */
-@media (max-height: 700px) {
+@media (max-height: 750px) {
     .venn-diagram-3 {
-        width: 240px;
-        height: 220px;
+        width: 280px;
+        height: 260px;
     }
     
     .venn-circle-3 {
-        width: 120px;
-        height: 120px;
+        width: 145px;
+        height: 145px;
     }
     
     .venn-label-3 {
@@ -1048,81 +1062,79 @@ header h1 {
     }
     
     .zone-a-only {
-        top: 12px;
-        width: 50px;
-        height: 38px;
+        top: 15px;
+        width: 55px;
+        height: 40px;
     }
     
     .zone-b-only, .zone-c-only {
-        bottom: 30px;
-        width: 42px;
-        height: 38px;
+        bottom: 25px;
+        width: 48px;
+        height: 40px;
     }
     
     .zone-ab, .zone-ac {
-        top: 62px;
-        width: 38px;
-        height: 35px;
+        top: 80px;
+        width: 42px;
+        height: 36px;
     }
     
-    .zone-ab { left: 45px; }
-    .zone-ac { right: 45px; }
+    .zone-ab { left: 50px; }
+    .zone-ac { right: 50px; }
     
     .zone-bc {
-        bottom: 22px;
-        width: 42px;
-        height: 30px;
+        bottom: 15px;
+        width: 48px;
+        height: 32px;
     }
     
     .zone-abc {
-        width: 42px;
-        height: 35px;
+        width: 48px;
+        height: 38px;
+        margin-top: 12px;
     }
     
     .venn-word {
         padding: 5px 8px;
-        font-size: 0.8rem;
+        font-size: 0.85rem;
     }
     
     .venn-word.in-zone {
-        padding: 3px 6px;
+        padding: 3px 5px;
         font-size: 0.65rem;
     }
 }
 
-@media (max-height: 600px) {
+@media (max-height: 650px) {
     .venn-diagram-3 {
-        width: 200px;
-        height: 190px;
+        width: 240px;
+        height: 220px;
     }
     
     .venn-circle-3 {
-        width: 100px;
-        height: 100px;
+        width: 125px;
+        height: 125px;
     }
     
     .circle-b, .circle-c {
-        bottom: 15px;
+        bottom: 8px;
     }
-    
-    .circle-b { left: 5px; }
-    .circle-c { right: 5px; }
     
     .zone-a-only {
-        top: 8px;
-        width: 42px;
-        height: 32px;
+        top: 12px;
+        width: 48px;
+        height: 35px;
     }
     
-    .zone-b-only { left: 10px; bottom: 25px; width: 36px; height: 32px; }
-    .zone-c-only { right: 10px; bottom: 25px; width: 36px; height: 32px; }
+    .zone-b-only { left: 8px; bottom: 20px; width: 42px; height: 35px; }
+    .zone-c-only { right: 8px; bottom: 20px; width: 42px; height: 35px; }
     
-    .zone-ab { top: 52px; left: 38px; width: 32px; height: 28px; }
-    .zone-ac { top: 52px; right: 38px; width: 32px; height: 28px; }
+    .zone-ab { top: 68px; left: 42px; width: 38px; height: 32px; }
+    .zone-ac { top: 68px; right: 42px; width: 38px; height: 32px; }
     
-    .zone-bc { bottom: 18px; width: 36px; height: 26px; }
+    .zone-bc { bottom: 12px; width: 42px; height: 28px; }
     
-    .zone-abc { width: 36px; height: 30px; }
+    .zone-abc { width: 42px; height: 34px; margin-top: 10px; }
     
     .venn-word.in-zone {
         padding: 2px 4px;
@@ -1130,15 +1142,15 @@ header h1 {
     }
 }
 
-@media (max-width: 320px) {
+@media (max-width: 350px) {
     .venn-diagram-3 {
-        width: 180px;
-        height: 170px;
+        width: 220px;
+        height: 200px;
     }
     
     .venn-circle-3 {
-        width: 90px;
-        height: 90px;
+        width: 115px;
+        height: 115px;
     }
 }
 
