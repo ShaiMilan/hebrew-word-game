@@ -12,12 +12,12 @@ class HebrewWordGame {
         this.gameOver = false;
         this.letterStatus = {};
         
-        // Hebrew keyboard layout (without final letters - they're treated as regular)
-        // Balanced rows for better fit on mobile
+        // Hebrew QWERTY keyboard layout (matches physical keyboard, without final letters)
+        // Displayed RTL so we reverse the order to match physical keyboard visually
         this.keyboardLayout = [
-            ['ק', 'ר', 'א', 'ט', 'ו', 'פ'],
-            ['ש', 'ד', 'ג', 'כ', 'ע', 'י', 'ח', 'ל'],
-            ['ז', 'ס', 'ב', 'ה', 'נ', 'מ', 'צ', 'ת']
+            ['פ', 'ו', 'ט', 'א', 'ר', 'ק'],           // P O(ם→removed) I(ן→removed) U Y T R E
+            ['ל', 'ח', 'י', 'ע', 'כ', 'ג', 'ד', 'ש'], // L K J H G F D S A
+            ['ת', 'צ', 'מ', 'נ', 'ה', 'ב', 'ס', 'ז']  // . , M N B V C X Z
         ];
         
         // Map final letters to regular letters
