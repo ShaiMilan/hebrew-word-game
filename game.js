@@ -5,19 +5,28 @@ class HebrewWordGame {
         this.currentMode = null;
         this.wordLength = 0;
         this.targetWord = '';
+        this.currentGuess = [];
         this.guesses = [];
         this.maxTries = 6;
         this.triesLeft = 6;
         this.gameOver = false;
         this.letterStatus = {};
         
+        // Hebrew keyboard layout
+        this.keyboardLayout = [
+            ['ק', 'ר', 'א', 'ט', 'ו', 'ן', 'ם', 'פ'],
+            ['ש', 'ד', 'ג', 'כ', 'ע', 'י', 'ח', 'ל', 'ך', 'ף'],
+            ['ז', 'ס', 'ב', 'ה', 'נ', 'מ', 'צ', 'ת', 'ץ']
+        ];
+        
         this.init();
     }
     
     init() {
         this.bindModeSelection();
+        this.bindKeyboard();
         this.bindButtons();
-        this.bindInput();
+        document.addEventListener('keydown', (e) => this.handlePhysicalKeyboard(e));
     }
     
     bindModeSelection() {
@@ -32,48 +41,46 @@ class HebrewWordGame {
     }
     
     bindButtons() {
-        document.getElementById('submit-btn').addEventListener('click', () => this.submitGuess());
         document.getElementById('restart-btn').addEventListener('click', () => this.restartGame());
         document.getElementById('change-mode-btn').addEventListener('click', () => this.showModeSelection());
     }
     
-    bindInput() {
-        const input = document.getElementById('guess-input');
-        
-        // Handle input changes
-        input.addEventListener('input', (e) => {
-            // Don't process if game hasn't started or is over
-            if (!this.currentMode || this.gameOver) {
-                return;
-            }
-            
-            // Filter to only Hebrew letters
-            const hebrewLetters = 'אבגדהוזחטיכךלמםנןסעפףצץקרשת';
-            let value = e.target.value.split('').filter(char => hebrewLetters.includes(char)).join('');
-            
-            // Limit to word length (only if wordLength is set)
-            if (this.wordLength > 0 && value.length > this.wordLength) {
-                value = value.substring(0, this.wordLength);
-            }
-            
-            e.target.value = value;
-            this.updateCurrentGuessDisplay(value);
-            this.updateSubmitButton(value);
-        });
-        
-        // Handle Enter key
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && this.currentMode && !this.gameOver) {
-                e.preventDefault();
-                this.submitGuess();
+    bindKeyboard() {
+        document.getElementById('keyboard').addEventListener('click', (e) => {
+            if (e.target.classList.contains('key')) {
+                const key = e.target.dataset.key;
+                if (key === 'delete') {
+                    this.deleteLetter();
+                } else if (key === 'enter') {
+                    this.submitGuess();
+                } else {
+                    this.addLetter(key);
+                }
             }
         });
+    }
+    
+    handlePhysicalKeyboard(e) {
+        if (this.gameOver || !this.currentMode) return;
+        
+        const hebrewKeys = 'קראטוןםפשדגכעיחלךףזסבהנמצתץ';
+        
+        if (e.key === 'Backspace') {
+            e.preventDefault();
+            this.deleteLetter();
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            this.submitGuess();
+        } else if (hebrewKeys.includes(e.key)) {
+            this.addLetter(e.key);
+        }
     }
     
     startGame(mode, letters) {
         this.currentMode = mode;
         this.wordLength = letters;
         this.targetWord = this.getRandomWord(letters);
+        this.currentGuess = [];
         this.guesses = [];
         this.triesLeft = this.maxTries;
         this.gameOver = false;
@@ -100,17 +107,7 @@ class HebrewWordGame {
         
         // Build the game board
         this.buildGuessesGrid();
-        this.buildCurrentGuess();
-        this.buildLetterStatus();
-        
-        // Clear and focus input
-        const input = document.getElementById('guess-input');
-        input.value = '';
-        input.maxLength = letters;
-        input.placeholder = `הקלד ${letters} אותיות...`;
-        input.focus();
-        
-        this.updateSubmitButton('');
+        this.buildKeyboard();
     }
     
     getRandomWord(length) {
@@ -142,61 +139,92 @@ class HebrewWordGame {
         }
     }
     
-    buildCurrentGuess() {
-        const container = document.getElementById('current-guess');
-        container.innerHTML = '';
+    buildKeyboard() {
+        const keyboard = document.getElementById('keyboard');
+        keyboard.innerHTML = '';
         
-        for (let i = 0; i < this.wordLength; i++) {
-            const tile = document.createElement('div');
-            tile.className = 'current-tile' + (i === 0 ? ' active' : '');
-            tile.id = `current-${i}`;
-            container.appendChild(tile);
-        }
+        this.keyboardLayout.forEach((row, rowIndex) => {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'keyboard-row';
+            
+            // Add delete key at the start of the last row
+            if (rowIndex === 2) {
+                const deleteKey = document.createElement('button');
+                deleteKey.className = 'key special';
+                deleteKey.dataset.key = 'delete';
+                deleteKey.textContent = '⌫';
+                rowDiv.appendChild(deleteKey);
+            }
+            
+            row.forEach(letter => {
+                const key = document.createElement('button');
+                key.className = 'key';
+                key.dataset.key = letter;
+                key.textContent = letter;
+                key.id = `key-${letter}`;
+                rowDiv.appendChild(key);
+            });
+            
+            // Add enter key at the end of the last row
+            if (rowIndex === 2) {
+                const enterKey = document.createElement('button');
+                enterKey.className = 'key special enter';
+                enterKey.dataset.key = 'enter';
+                enterKey.textContent = '✓';
+                rowDiv.appendChild(enterKey);
+            }
+            
+            keyboard.appendChild(rowDiv);
+        });
     }
     
-    buildLetterStatus() {
-        const container = document.getElementById('letter-status');
-        container.innerHTML = '<div class="letter-status-header">מצב האותיות:</div>';
-    }
-    
-    updateCurrentGuessDisplay(value) {
-        const letters = value.split('');
+    addLetter(letter) {
+        if (this.gameOver || this.currentGuess.length >= this.wordLength) return;
         
-        for (let i = 0; i < this.wordLength; i++) {
-            const tile = document.getElementById(`current-${i}`);
-            tile.textContent = letters[i] || '';
-            tile.classList.toggle('filled', i < letters.length);
-            tile.classList.toggle('active', i === letters.length);
-        }
+        this.currentGuess.push(letter);
+        this.updateCurrentRow();
     }
     
-    updateSubmitButton(value) {
-        const btn = document.getElementById('submit-btn');
-        btn.disabled = !value || value.length !== this.wordLength;
+    deleteLetter() {
+        if (this.gameOver || this.currentGuess.length === 0) return;
+        
+        this.currentGuess.pop();
+        this.updateCurrentRow();
+    }
+    
+    updateCurrentRow() {
+        const rowIndex = this.guesses.length;
+        for (let i = 0; i < this.wordLength; i++) {
+            const tile = document.getElementById(`tile-${rowIndex}-${i}`);
+            tile.textContent = this.currentGuess[i] || '';
+            tile.classList.toggle('filled', i < this.currentGuess.length);
+        }
     }
     
     submitGuess() {
-        const input = document.getElementById('guess-input');
-        const guess = input.value;
+        if (this.gameOver || this.currentGuess.length !== this.wordLength) {
+            if (this.currentGuess.length < this.wordLength) {
+                this.showMessage('השלם את כל האותיות!', 'error');
+            }
+            return;
+        }
         
-        if (this.gameOver || guess.length !== this.wordLength) return;
-        
+        const guess = this.currentGuess.join('');
         const result = this.checkGuess(guess);
         
         // Add to guesses history
         this.guesses.push({ word: guess, result: result });
         
-        // Display the guess in the grid
-        this.displayGuess(this.guesses.length - 1, guess, result);
+        // Display the guess result
+        this.displayGuessResult(this.guesses.length - 1, guess, result);
         
-        // Update letter status display
-        this.updateLetterStatusDisplay(guess, result);
+        // Update keyboard colors
+        this.updateKeyboardColors(guess, result);
         
         // Check if won
         if (guess === this.targetWord) {
             this.gameOver = true;
-            input.disabled = true;
-            setTimeout(() => this.showWinModal(), 800);
+            setTimeout(() => this.showWinModal(), 600);
             return;
         }
         
@@ -207,16 +235,13 @@ class HebrewWordGame {
         // Check if lost
         if (this.triesLeft === 0) {
             this.gameOver = true;
-            input.disabled = true;
-            setTimeout(() => this.showLoseModal(), 800);
+            setTimeout(() => this.showLoseModal(), 600);
             return;
         }
         
-        // Reset input
-        input.value = '';
-        this.updateCurrentGuessDisplay('');
-        this.updateSubmitButton('');
-        input.focus();
+        // Reset current guess
+        this.currentGuess = [];
+        this.showMessage('');
     }
     
     checkGuess(guess) {
@@ -255,72 +280,40 @@ class HebrewWordGame {
         return result;
     }
     
-    displayGuess(rowIndex, guess, result) {
+    displayGuessResult(rowIndex, guess, result) {
         const letters = guess.split('');
         
         letters.forEach((letter, i) => {
             setTimeout(() => {
                 const tile = document.getElementById(`tile-${rowIndex}-${i}`);
                 tile.textContent = letter;
-                tile.className = 'guess-tile ' + result[i];
-            }, i * 150);
+                tile.classList.remove('filled');
+                tile.classList.add(result[i]);
+            }, i * 100);
         });
     }
     
-    updateLetterStatusDisplay(guess, result) {
+    updateKeyboardColors(guess, result) {
         const letters = guess.split('');
         
         letters.forEach((letter, i) => {
+            const key = document.getElementById(`key-${letter}`);
+            if (!key) return;
+            
             const status = result[i];
             const currentStatus = this.letterStatus[letter];
             
             // Priority: correct > wrong-position > wrong
             if (status === 'correct') {
                 this.letterStatus[letter] = 'correct';
+                key.className = 'key correct';
             } else if (status === 'wrong-position' && currentStatus !== 'correct') {
                 this.letterStatus[letter] = 'wrong-position';
+                key.className = 'key wrong-position';
             } else if (!currentStatus) {
                 this.letterStatus[letter] = 'wrong';
+                key.className = 'key wrong';
             }
-        });
-        
-        // Rebuild the status display
-        const container = document.getElementById('letter-status');
-        container.innerHTML = '<div class="letter-status-header">מצב האותיות:</div>';
-        
-        // Group by status
-        const correct = [];
-        const wrongPosition = [];
-        const wrong = [];
-        
-        Object.entries(this.letterStatus).forEach(([letter, status]) => {
-            if (status === 'correct') correct.push(letter);
-            else if (status === 'wrong-position') wrongPosition.push(letter);
-            else wrong.push(letter);
-        });
-        
-        // Add correct letters
-        correct.forEach(letter => {
-            const span = document.createElement('span');
-            span.className = 'letter-status-item correct';
-            span.textContent = letter + ' ✓';
-            container.appendChild(span);
-        });
-        
-        // Add wrong position letters
-        wrongPosition.forEach(letter => {
-            const span = document.createElement('span');
-            span.className = 'letter-status-item wrong-position';
-            span.textContent = letter + ' ?';
-            container.appendChild(span);
-        });
-        
-        // Add wrong letters
-        wrong.forEach(letter => {
-            const span = document.createElement('span');
-            span.className = 'letter-status-item wrong';
-            span.textContent = letter + ' ✗';
-            container.appendChild(span);
         });
     }
     
@@ -390,15 +383,10 @@ class HebrewWordGame {
     }
     
     restartGame() {
-        const input = document.getElementById('guess-input');
-        input.disabled = false;
         this.startGame(this.currentMode, this.wordLength);
     }
     
     showModeSelection() {
-        const input = document.getElementById('guess-input');
-        input.disabled = false;
-        
         document.getElementById('game-over-modal').classList.add('hidden');
         document.getElementById('game-area').classList.add('hidden');
         document.getElementById('mode-selection').classList.remove('hidden');

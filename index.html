@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>משחק ניחוש המילה</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,11 +14,9 @@
         <!-- Background decorations -->
         <div class="bg-decoration bg-1"></div>
         <div class="bg-decoration bg-2"></div>
-        <div class="bg-decoration bg-3"></div>
         
         <header>
             <h1>🎯 נחש את המילה</h1>
-            <p class="subtitle">כמה מהר תצליח לגלות?</p>
         </header>
 
         <!-- Mode Selection -->
@@ -58,30 +56,11 @@
             <!-- Guesses Grid -->
             <div id="guesses-grid" class="guesses-grid"></div>
 
-            <!-- Current Input -->
-            <div class="input-area">
-                <div id="current-guess" class="current-guess"></div>
-                <div class="native-input-container">
-                    <input 
-                        type="text" 
-                        id="guess-input" 
-                        class="guess-input" 
-                        placeholder="הקלד כאן..."
-                        autocomplete="off"
-                        autocapitalize="off"
-                        autocorrect="off"
-                        spellcheck="false"
-                        dir="rtl"
-                    />
-                    <button id="submit-btn" class="submit-btn" disabled>נחש!</button>
-                </div>
-            </div>
-
-            <!-- Letter Status Legend -->
-            <div id="letter-status" class="letter-status"></div>
-
             <!-- Message Area -->
             <div id="message" class="message"></div>
+
+            <!-- Virtual Keyboard -->
+            <div id="keyboard" class="keyboard"></div>
         </div>
 
         <!-- Game Over Modal -->
@@ -101,4 +80,3 @@
     <script src="game.js"></script>
 </body>
 </html>
-
