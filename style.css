@@ -1240,15 +1240,9 @@ header h1 {
     left: 40%;
     width: 20%;
     height: 100%;
-    background: linear-gradient(180deg, 
-        rgba(16, 185, 129, 0.4) 0%,
-        rgba(16, 185, 129, 0.6) 50%,
-        rgba(16, 185, 129, 0.4) 100%
-    );
-    border-left: 3px solid var(--correct);
-    border-right: 3px solid var(--correct);
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
-    border-radius: 8px;
+    background: transparent;
+    border-left: 4px solid var(--correct);
+    border-right: 4px solid var(--correct);
     transition: left 0.3s ease-out, width 0.3s ease-out;
 }
 
