@@ -76,9 +76,13 @@ class TimingGame {
         
         // Sweet spot gets smaller with rounds
         const sweetSpotSize = Math.max(10, 25 - difficulty * 1.5);
-        this.sweetSpotStart = 50 - sweetSpotSize / 2;
-        this.sweetSpotEnd = 50 + sweetSpotSize / 2;
-        this.sweetSpotCenter = 50;
+        
+        // Random position for sweet spot (ensure it fits within the meter)
+        const minCenter = sweetSpotSize / 2 + 5; // 5% padding from left edge
+        const maxCenter = 100 - sweetSpotSize / 2 - 5; // 5% padding from right edge
+        this.sweetSpotCenter = minCenter + Math.random() * (maxCenter - minCenter);
+        this.sweetSpotStart = this.sweetSpotCenter - sweetSpotSize / 2;
+        this.sweetSpotEnd = this.sweetSpotCenter + sweetSpotSize / 2;
         
         // Random starting position and direction
         this.meterPosition = Math.random() * 30; // Start near left
