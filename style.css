@@ -26,7 +26,8 @@
 
 html, body {
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 body {
@@ -66,8 +67,8 @@ body {
     max-width: 500px;
     margin: 0 auto;
     padding: 10px;
-    height: 100vh;
-    height: 100dvh;
+    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -661,8 +662,10 @@ header h1 {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 30px;
+    padding: 20px 0;
+    overflow-y: auto;
 }
 
 .main-menu header {
@@ -1253,7 +1256,7 @@ header h1 {
     background: linear-gradient(180deg, #fff 0%, var(--accent-gold) 50%, #fff 100%);
     border-radius: 4px;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.4);
-    transition: left 0.016s linear;
+    /* No transition - instant response */
 }
 
 .meter-labels {

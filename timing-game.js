@@ -18,6 +18,7 @@ class TimingGame {
         
         this.animationId = null;
         this.lastTime = 0;
+        this.hitPosition = null; // Store position at moment of hit
         
         this.init();
     }
@@ -27,7 +28,17 @@ class TimingGame {
     }
     
     bindEvents() {
-        document.getElementById('timing-hit-btn').addEventListener('click', () => this.hit());
+        // Use mousedown/touchstart for faster response
+        const hitBtn = document.getElementById('timing-hit-btn');
+        hitBtn.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            this.hit();
+        });
+        hitBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            this.hit();
+        }, { passive: false });
+        
         document.getElementById('timing-restart-btn').addEventListener('click', () => this.startNewGame());
         document.getElementById('timing-back-menu-btn').addEventListener('click', () => this.backToMenu());
         
@@ -128,17 +139,18 @@ class TimingGame {
     hit() {
         if (!this.isRunning || this.gameOver) return;
         
-        // Stop animation
+        // IMMEDIATELY capture position FIRST (before any other operations)
+        const position = this.meterPosition;
+        
+        // Stop animation immediately
         this.isRunning = false;
         if (this.animationId) {
             cancelAnimationFrame(this.animationId);
+            this.animationId = null;
         }
         
         // Disable button
         document.getElementById('timing-hit-btn').disabled = true;
-        
-        // Calculate score
-        const position = this.meterPosition;
         let points = 0;
         let resultText = '';
         let resultClass = '';
